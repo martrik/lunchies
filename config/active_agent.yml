@@ -1,0 +1,14 @@
+default: &default
+  openai:
+    service: "OpenAI"
+    api_key: <%= Rails.application.credentials.dig(:openai, :api_key) %>
+    model: "gpt-5.2"
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

@@ -19,6 +19,11 @@ gem "tailwindcss-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
+# AI Agent framework [https://docs.activeagents.ai]
+gem "activeagent"
+gem "openai"
+gem "faraday"
+
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 
