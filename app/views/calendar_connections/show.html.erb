@@ -1,0 +1,42 @@
+<div class="mx-auto md:w-2/3 w-full">
+  <% if alert = flash[:alert] %>
+    <div class="alert alert-error mb-5" role="alert">
+      <span><%= alert %></span>
+    </div>
+  <% end %>
+
+  <% if notice = flash[:notice] %>
+    <div class="alert alert-success mb-5" role="alert">
+      <span><%= notice %></span>
+    </div>
+  <% end %>
+
+  <h1 class="font-bold text-4xl mb-6">Calendar Connection</h1>
+
+  <% if @calendar_connection %>
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body">
+        <h2 class="card-title">Connection Status</h2>
+        <div class="space-y-2">
+          <p><strong>Provider:</strong> <span class="badge badge-primary"><%= @calendar_connection.provider.capitalize %></span></p>
+          <p><strong>Email:</strong> <%= @calendar_connection.google_email %></p>
+          <p><strong>Status:</strong> 
+            <% if @calendar_connection.valid_token? %>
+              <span class="badge badge-success">Connected</span>
+            <% else %>
+              <span class="badge badge-warning">Token Expired</span>
+            <% end %>
+          </p>
+        </div>
+        <div class="card-actions justify-end mt-4">
+          <%= link_to "View Events", calendar_connection_events_path, class: "btn btn-primary" %>
+          <%= link_to "Reconnect", calendar_connection_path, method: :delete, class: "btn btn-outline", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <div class="alert alert-info">
+      <span>No calendar connection found. <%= link_to "Connect your calendar", new_calendar_connection_path, class: "underline" %> to get started.</span>
+    </div>
+  <% end %>
+</div>

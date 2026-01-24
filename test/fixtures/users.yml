@@ -1,0 +1,7 @@
+one:
+  email_address: one@example.com
+  google_id: "google-id-one"
+
+two:
+  email_address: two@example.com
+  google_id: "google-id-two"

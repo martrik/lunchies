@@ -1,0 +1,79 @@
+<div class="mx-auto md:w-2/3 w-full">
+  <% if alert = flash[:alert] %>
+    <div class="alert alert-error mb-5" role="alert">
+      <span><%= alert %></span>
+    </div>
+  <% end %>
+
+  <% if notice = flash[:notice] %>
+    <div class="alert alert-success mb-5" role="alert">
+      <span><%= notice %></span>
+    </div>
+  <% end %>
+
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="font-bold text-4xl">Recurring Events</h1>
+    <%= link_to "Back", new_calendar_connection_path, class: "btn btn-outline" %>
+  </div>
+
+  <% if @events.present? %>
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body">
+        <p class="text-sm text-base-content/70 mb-4">Select a recurring event to use for your team lunches:</p>
+        <div class="overflow-x-auto">
+          <table class="table table-zebra">
+            <thead>
+              <tr>
+                <th>Event Name</th>
+                <th>Recurrence</th>
+                <th>Next Occurrence</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @events.each do |event| %>
+                <tr>
+                  <td>
+                    <div class="font-semibold"><%= event.summary || "Untitled Event" %></div>
+                    <% if event.description.present? %>
+                      <div class="text-sm text-base-content/70 mt-1"><%= truncate(event.description, length: 100) %></div>
+                    <% end %>
+                  </td>
+                  <td>
+                    <% if event.recurrence.present? %>
+                      <span class="badge badge-info">
+                        <%= event.recurrence.first&.split(":")&.first || "Recurring" %>
+                      </span>
+                    <% else %>
+                      <span class="badge badge-ghost">Unknown</span>
+                    <% end %>
+                  </td>
+                  <td>
+                    <% if event.start&.date_time %>
+                      <%= event.start.date_time.strftime("%B %d, %Y at %I:%M %p") %>
+                    <% elsif event.start&.date %>
+                      <%= Date.parse(event.start.date).strftime("%B %d, %Y") %>
+                    <% else %>
+                      N/A
+                    <% end %>
+                  </td>
+                  <td>
+                    <%= form_with url: select_event_calendar_connection_path, method: :post, local: true do |form| %>
+                      <%= form.hidden_field :event_id, value: event.id %>
+                      <%= form.hidden_field :calendar_id, value: "primary" %>
+                      <%= form.submit "Select", class: "btn btn-sm btn-primary" %>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <div class="alert alert-info">
+      <span>No recurring events found in your calendar. Make sure you have recurring events set up in Google Calendar.</span>
+    </div>
+  <% end %>
+</div>

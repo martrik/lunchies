@@ -24,8 +24,12 @@ gem "activeagent"
 gem "openai"
 gem "faraday"
 
-# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
+# Google Calendar integration
+gem "google-apis-calendar_v3", "~> 0.1"
+gem "googleauth", "~> 1.0"
+
+# Google Sign-In (OAuth)
+gem "google_sign_in"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
