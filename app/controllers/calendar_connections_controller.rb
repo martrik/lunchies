@@ -1,5 +1,5 @@
 class CalendarConnectionsController < ApplicationController
-  before_action :set_calendar_connection, only: [:show, :events]
+  before_action :set_calendar_connection, only: [ :show, :events ]
 
   def new
     @calendar_connection = Current.user.calendar_connection
