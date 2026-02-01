@@ -29,7 +29,7 @@
           </p>
         </div>
         <div class="card-actions justify-end mt-4">
-          <%= link_to "View Events", calendar_connection_events_path, class: "btn btn-primary" %>
+          <%= link_to "View Events", events_calendar_connection_path, class: "btn btn-primary" %>
           <%= link_to "Reconnect", calendar_connection_path, method: :delete, class: "btn btn-outline", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
         </div>
       </div>

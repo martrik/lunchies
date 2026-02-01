@@ -14,25 +14,15 @@
   <h1 class="font-bold text-4xl mb-6">Connect Google Calendar</h1>
 
   <% if @calendar_connection %>
-    <div class="card bg-base-100 shadow-xl mb-6">
-      <div class="card-body">
-        <h2 class="card-title">Calendar Connected</h2>
-        <p>Your Google Calendar is connected as <strong><%= @calendar_connection.google_email %></strong></p>
-        <div class="card-actions justify-end mt-4">
-          <%= link_to "View Events", calendar_connection_events_path, class: "btn btn-primary" %>
-          <%= link_to "Reconnect", calendar_connection_path, method: :delete, class: "btn btn-outline", data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to disconnect your calendar?" } %>
-        </div>
-      </div>
+    <p>Your Google Calendar is connected as <strong><%= @calendar_connection.google_email %></strong></p>
+    <div class="card-actions justify-end mt-4">
+        <%= link_to "View Events", events_calendar_connection_path, class: "btn btn-primary" %>
+        <%= link_to "Reconnect", calendar_connection_path, method: :delete, class: "btn btn-outline", data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to disconnect your calendar?" } %>
     </div>
   <% else %>
-    <div class="card bg-base-100 shadow-xl">
-      <div class="card-body">
-        <h2 class="card-title">Connect Your Calendar</h2>
-        <p>Connect your Google Calendar to view and select recurring events for your team lunches.</p>
-        <div class="card-actions justify-end mt-4">
-          <%= link_to "Connect Google Calendar", calendar_connection_path, method: :post, class: "btn btn-primary", data: { turbo_method: :post } %>
-        </div>
-      </div>
+    <p>Connect your Google Calendar to view and select recurring events for your team lunches.</p>
+    <div class="card-actions justify-first mt-4">
+    <%= button_to "Connect Google Calendar", calendar_connection_path, method: :post, class: "btn btn-primary", data: { turbo: false } %>
     </div>
   <% end %>
 </div>

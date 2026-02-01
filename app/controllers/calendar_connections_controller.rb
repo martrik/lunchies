@@ -7,7 +7,7 @@ class CalendarConnectionsController < ApplicationController
 
   def create
     client_id = Rails.application.credentials.dig(:google, :client_id)
-    redirect_uri = Rails.application.credentials.dig(:google, :redirect_uri) || calendar_connection_callback_url
+    redirect_uri = Rails.application.credentials.dig(:google, :redirect_uri) || callback_calendar_connection_url
     scope = Rails.application.config.google_calendar_scope
 
     auth_url = "https://accounts.google.com/o/oauth2/v2/auth?" + {
@@ -36,7 +36,7 @@ class CalendarConnectionsController < ApplicationController
 
     client_id = Rails.application.credentials.dig(:google, :client_id)
     client_secret = Rails.application.credentials.dig(:google, :client_secret)
-    redirect_uri = Rails.application.credentials.dig(:google, :redirect_uri) || calendar_connection_callback_url
+    redirect_uri = Rails.application.credentials.dig(:google, :redirect_uri) || callback_calendar_connection_url
 
     token_client = Signet::OAuth2::Client.new(
       token_credential_uri: "https://oauth2.googleapis.com/token",
@@ -65,7 +65,7 @@ class CalendarConnectionsController < ApplicationController
         google_email: google_email
       )
 
-      redirect_to calendar_connection_events_path, notice: "Calendar connected successfully"
+      redirect_to events_calendar_connection_path, notice: "Calendar connected successfully"
     rescue StandardError => e
       Rails.logger.error "Calendar connection error: #{e.message}"
       redirect_to new_calendar_connection_path, alert: "Failed to connect calendar: #{e.message}"
@@ -99,7 +99,7 @@ class CalendarConnectionsController < ApplicationController
     calendar_id = params[:calendar_id] || "primary"
 
     unless event_id.present?
-      redirect_to calendar_connection_events_path, alert: "Event ID is required"
+      redirect_to events_calendar_connection_path, alert: "Event ID is required"
       return
     end
 
@@ -108,7 +108,7 @@ class CalendarConnectionsController < ApplicationController
 
     default_team = Current.user.team_memberships.first&.team
     unless default_team
-      redirect_to calendar_connection_events_path, alert: "You must belong to a team first"
+      redirect_to events_calendar_connection_path, alert: "You must belong to a team first"
       return
     end
 
@@ -121,10 +121,10 @@ class CalendarConnectionsController < ApplicationController
       refresh_token: Current.user.calendar_connection.refresh_token
     )
 
-    redirect_to calendar_connection_events_path, notice: "Event '#{event.summary}' has been saved"
+    redirect_to events_calendar_connection_path, notice: "Event '#{event.summary}' has been saved"
   rescue StandardError => e
     Rails.logger.error "Error selecting event: #{e.message}"
-    redirect_to calendar_connection_events_path, alert: "Failed to save event: #{e.message}"
+    redirect_to events_calendar_connection_path, alert: "Failed to save event: #{e.message}"
   end
 
   def destroy
